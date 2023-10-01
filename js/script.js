@@ -3,6 +3,8 @@ const username = "asazzam";
 const repoList = document.querySelector(".repo-list");
 const repoSection = document.querySelector(".repos");
 const repoDataSection = document.querySelector(".repo-data");
+const backButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos");
 
 //Fetch API JSON Data
 const getData = async function () {
@@ -41,6 +43,7 @@ const getRepos = async function () {
 };
 
 //Display info about repos
+filterInput.classList.remove("hide");
 const displayRepoInfo = function (repos) {
   for (const repo of repos) {
     const repoItem = document.createElement("li");
@@ -95,4 +98,30 @@ const repoDisplay = function (repoInfo, languages) {
   repoDataSection.append(div);
   repoDataSection.classList.remove("hide");
   repoSection.classList.add("hide");
+  backButton.classList.remove("hide");
 };
+
+//Back button
+backButton.addEventListener("click", function () {
+  repoSection.classList.remove("hide");
+  repoDataSection.classList.add("hide");
+  backButton.classList.add("hide");
+});
+
+//Input event
+filterInput.addEventListener("input", function (e) {
+  const searchTextValue = e.target.value;
+  /*console.log(searchTextValue);*/
+  const repos = document.querySelectorAll(".repo");
+  const searchLowerCase = searchTextValue.toLowerCase();
+
+  for (const repo of repos) {
+    const lowerCaseRepo = repo.innerText.toLowerCase();
+
+    if (lowerCaseRepo.includes(searchLowerCase)) {
+      repo.classList.remove("hide");
+    } else {
+      repo.classList.add("hide");
+    }
+  }
+});
